@@ -22,6 +22,9 @@ namespace dden_csv_to_json
             string path = $"dealers_appdata_ef24.csv";
             string outpath = $"{path}.json";
 
+            string art_placeholder = $"placeholder.jpg";
+            string preview_placeholder = $"placeholder_preview.jpg";
+
             if (!File.Exists(path))
             {
                 Console.WriteLine($"csv not found: \"{path}\". Aborting.");
@@ -54,8 +57,18 @@ namespace dden_csv_to_json
             // add image file names
             foreach (Artist artist in result.artists)
             {
-                artist.thumbnail = $"art_{artist.reg}_preview.jpg";
-                artist.image = $"art_{artist.reg}.jpg";
+                artist.thumbnail = preview_placeholder;
+                artist.image = art_placeholder;
+
+                if (File.Exists($"images/art_{artist.reg}_preview.jpg"))
+                {
+                    artist.thumbnail = $"art_{artist.reg}_preview.jpg";
+                }
+
+                if (File.Exists($"images/art_{artist.reg}.jpg"))
+                {
+                    artist.image = $"art_{artist.reg}.jpg";
+                }
             }
 
             // write json
